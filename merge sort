@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> merge(vector<int> v1, vector<int> v2)
+{
+ int i=0,j=0;
+ vector<int> v;
+ while(i<v1.size() && j<v2.size())
+ {
+  if(v1[i]<v2[j])
+   v.push_back(v1[i++]);
+  else
+   v.push_back(v2[j++]);
+ }
+ while(i<v1.size())
+  v.push_back(v1[i++]);
+ while(j<v2.size())
+  v.push_back(v2[j++]);
+ return v;
+}
+
+vector<int> mergesort(vector<int> v)
+{
+	if(v.size()==1)
+		return v;
+        int mid=v.size()/2;
+	vector<int> ini(v.begin(),v.begin()+mid);
+	vector<int> endd(v.begin()+mid,v.end());
+	v=merge(mergesort(ini),mergesort(endd));
+	return v;
+}
+
+int main()
+{
+	int n;
+	cout<<"Enter size of array : ";
+	cin>>n;
+	vector<int> v(n);
+	cout<<"Enter "<<n<<" elements: ";
+	for(int i=0;i<n;++i)
+	{
+		v[i]=rand()%n;
+	}
+	cout<<"\noriginal array : ";
+	for(int i=0;i<v.size();++i)
+	{
+		cout<<v[i]<<' ';
+	}
+	cout<<endl;
+	int t1=clock();
+	cout<<"\nSorting";
+	vector<int> ans=mergesort(v);
+	int t2=clock();
+	cout<<"\nSorted array\n";
+	for(int i=0;i<ans.size();++i)
+		cout<<ans[i]<<' ';
+	cout<<"\ntime taken to sort : "<<(t2-t1)/(double)CLOCKS_PER_SEC*1000<<" milli sec"<<endl;
+	return 0;
+}

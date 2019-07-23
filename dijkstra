@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define INF 10000
+#define FOR(i,a,b) for(int i=a;i<b;++i)
+void shortestPath(vector<vector<int> > graph, int src, int n)
+{
+	vector<int> cost(n);
+	fill(cost.begin(),cost.end(),INF);
+	vector<int> visited(n);
+	fill(visited.begin(),visited.end(),0);
+	visited[src]=1;
+	cost[src]=0;
+	vector<int> parent(n);
+	parent[src]=src;
+	int count=1;
+	while(count<n)
+	{
+		int min=INF,min_index;
+		FOR(i,0,n)
+		{
+			if(visited[i]==0)
+			{
+				if(cost[src]+graph[src][i]<cost[i])
+				{
+					cost[i]=cost[src]+graph[src][i];
+					parent[i]=src;
+				}
+				if(cost[i]<min)
+				{
+					min=cost[i];
+					min_index=i;
+				}
+			}
+		}
+		visited[min_index]=1;
+		src=min_index;
+		count++;
+	}
+	FOR(i,0,n)
+		cout<<"\n"<<parent[i]<<"->"<<i<<" ; total cost : "<<cost[i]<<"\n\n";
+}
+int main()
+{
+	
+	int n;
+	cout<<"\nno. of nodes: ";
+	cin>>n;
+	vector< vector<int> > graph;
+	int e;
+	cout<<"\nno. of edges : ";
+	cin>>e;
+	FOR(i,0,n)
+	{
+		vector<int> temp(n);		
+		FOR(j,0,n)
+			temp[j]=INF;
+		graph.push_back(temp);
+	}	
+	FOR(i,0,e)
+	{
+		int src,dst,wt;		
+		cout<<"\nfrom : ";
+		cin>>src;
+		cout<<"to : ";
+		cin>>dst;
+		cout<<"weight : ";
+		cin>>wt;
+		graph[src][dst]=wt;
+		graph[dst][src]=wt;
+	}
+	int source;
+	cout<<"\nsource : ";
+	cin>>source;
+	shortestPath(graph,source,n);
+	return 0;
+}

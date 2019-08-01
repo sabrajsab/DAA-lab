@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define FOR(i,a,b) for(int i=a;i<b;++i)
+int next_min(int v,vector<int> visited,vector<int> key)
+{
+    int mini=INT_MAX,mini_index;
+    FOR(i,0,v)
+    {
+        if(visited[i]==0 && key[i]<mini)
+        {
+            mini=key[i],mini_index=i;
+        }
+    }
+    return mini_index;
+}
+void prims(int v, vector<int> visited, vector<vector<int>> graph, vector<int> key)
+{
+    key[0]=0;
+
+    int items_visited=0;
+    vector<int> parent(v);
+    parent[0]=-1;
+    while(items_visited<=v)
+    {
+        int next_item=next_min(v,visited,key);
+        visited[next_item]=1;
+        items_visited++;
+        FOR(j,0,v)
+        {
+            if(visited[j]==0 && graph[next_item][j]<key[j])
+            {
+                key[j]=graph[next_item][j];
+                parent[j]=next_item;
+            }
+        }
+    }
+    FOR(i,1,v)
+    {
+        cout<<"\n"<<parent[i]<<" - "<<i<<endl;
+    }
+}
+int main()
+{
+    int v;
+    cout<<"Enter no. of nodes : ";
+    cin>>v;
+    vector<vector<int>> graph(v);
+    vector<int> temp(v);
+    fill(temp.begin(),temp.end(),INT_MAX);
+    FOR(i,0,v)
+    {
+        graph[i]=temp;
+    }
+    vector<int> visited(v);
+    fill(visited.begin(),visited.end(),0);
+    vector<int> key(v);
+    fill(key.begin(),key.end(),INT_MAX);
+
+    cout<<"\nEnter edges (from, to, cost) -1 to terminate :\n";
+    int from, to, cost;
+    cin>>from;
+    while(from!=-1)
+    {
+        cin>>to;
+        cin>>cost;
+        graph[from][to]=cost;
+        graph[to][from]=cost;
+        cin>>from;
+    }
+
+    prims(v,visited,graph,key);
+    return 0;
+}

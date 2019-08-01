@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define FOR(i,a,b) for(int i=a;i<b;++i)
+int parentOf(int p,vector<int> parent)
+{
+    if(parent[p]==-1)
+        return p;
+    else return parentOf(parent[p],parent);
+}
+void kruskal(int v,vector<vector<int>> edges)
+{
+    vector<int> parent(v);
+    fill(parent.begin(),parent.end(),-1);
+    sort(edges.begin(),edges.end());
+    FOR(i,0,edges.size())
+    {
+        if(parentOf(edges[i][1],parent)!=parentOf(edges[i][2],parent))
+        {
+            parent[parentOf(edges[i][1],parent)]=edges[i][2];
+            cout<<edges[i][1]<<" - "<<edges[i][2]<<endl;
+        }
+    }
+}
+int main()
+{
+    int v;
+    cout<<"Enter no. of nodes : ";
+    cin>>v;
+    vector<vector<int>> edges;
+    cout<<"\nEnter edges (cost, from, to) -1 to terminate :\n";
+    int from, to, cost;
+    cin>>cost;
+    while(cost!=-1)
+    {
+        cin>>from;
+        cin>>to;
+        vector<int> temp(3);
+        temp[0]=cost;
+        temp[1]=from;
+        temp[2]=to;
+        edges.push_back(temp);
+        cin>>cost;
+    }
+
+    kruskal(v,edges);
+    return 0;
+}

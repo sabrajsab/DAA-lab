@@ -1,0 +1,75 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define FOR(i,a,b) for(int i=a;i<b;++i)
+bool isSafe(int r,int c,vector<vector<int>> board)
+{
+    for(int j=c-1,i=r-1;j>=0&&i>=0;--j,--i)
+    {
+        if(board[i][j])
+        {
+            return false;
+        }
+    }
+    for(int j=c-1;j>=0;--j)
+    {
+        if(board[r][j])
+        {
+            return false;
+        }
+    }
+    for(int j=c-1,i=r+1;j>=0&&i<board.size();--j,++i)
+    {
+        if(board[i][j])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+bool nqueens(int n,vector<vector<int>> &board,int col)
+{
+    if(col>=n)
+        return true;
+    FOR(i,0,n)
+    {
+        if(isSafe(i,col,board))
+        {
+            cout<<i<<' '<<col<<endl;
+            board[i][col]=1;
+            if(nqueens(n,board,col+1))
+                return true;
+            board[i][col]=0;
+        }
+    }
+    return false;
+}
+int main()
+{
+    int v;
+    cout<<"Enter row size : ";
+    cin>>v;
+    vector<vector<int>> board(v);
+    vector<int> temp(v);
+    fill(temp.begin(),temp.end(),0);
+    FOR(i,0,v)
+        board[i]=temp;
+    FOR(i,0,v)
+        {
+            FOR(j,0,v)
+                cout<<board[i][j]<<' ';
+            cout<<endl;
+        }
+    if(!nqueens(v,board,0))
+        cout<<"\nsolution not exist\n";
+    else
+    {
+        FOR(i,0,v)
+        {
+            FOR(j,0,v)
+                cout<<board[i][j]<<' ';
+            cout<<endl;
+        }
+    }
+
+    return 0;
+}
